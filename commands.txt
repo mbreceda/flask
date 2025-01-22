@@ -3,3 +3,6 @@ docker build -t rest-api-flask-python .
 
 // Run debbuger
 docker compose -f docker-compose.yml -f docker-compose.debug.yml up
+
+// Run build with a volume
+docker run -dp 8000:5000 -w /app -v "$(pwd):/app" flask-smorest-api
