@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5000"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: app.py
+    # depends_on:
+    #   - db
+  # db:
+  #   platform: linux/x86_64
+  #   image: mysql:5.7
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: flask_db
+  #     MYSQL_USER: root
+  #     MYSQL_PASSWORD: root
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./data:/var/lib/mysql

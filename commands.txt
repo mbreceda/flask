@@ -1,0 +1,5 @@
+// Run build
+docker build -t rest-api-flask-python .
+
+// Run debbuger
+docker compose -f docker-compose.yml -f docker-compose.debug.yml up
