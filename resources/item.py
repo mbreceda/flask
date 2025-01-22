@@ -3,6 +3,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from db import items
+from schemas import ItemSchema, ItemUplodateSchema 
 
 blp = Blueprint("Items", __name__, description="Operations on items")
 
@@ -21,11 +22,8 @@ class Item(MethodView):
         except KeyError:
             abort(404, message="Item not found")
 
-    def put(self, item_id):
-        item_data = request.get_json()
-        if "prince" not in item_data or "name" not in item_data:
-            abort(400, message="Missing required fields")
-
+    @blp.arguments(ItemUplodateSchema)
+    def put(self, item_data, item_id):
         try:
             item = items[item_id]
             item |= item_data
@@ -39,20 +37,16 @@ class ItemList(MethodView):
     def get(self):
         return { "items": list(items.values()) }
 
-    def post(self):
-        item_data = request.get_json()
-        if (
-            "price" not in item_data 
-            or "name" not in item_data
-            or "store_id" not in item_data
-        ): 
-            abort(400, message="Missing required fields")
-
+    @blp.arguments(ItemSchema)
+    def post(self, item_data):
         for item in items.values():
-            if item["name"] == item_data["name"]:
+            if (item["name"] == item_data["name"] 
+                and item["store_id"] == item_data["store_id"]
+            ):
                 abort(400, message="Item already exists")
+
         item_id = uuid.uuid4().hex
         item = {**item_data, "id": item_id }
         items[item_id] = item
+        
         return item, 201
-    
