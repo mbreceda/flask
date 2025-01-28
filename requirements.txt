@@ -4,3 +4,4 @@ python-dotenv
 sqlalchemy
 flask_sqlalchemy
 black
+flask-jwt-extended
