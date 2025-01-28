@@ -11,20 +11,21 @@ from schemas import StoreSchema
 blp = Blueprint("store", __name__, description="Operations on stores")
 
 
-@blp.route('/store/<string:store_id>')
+@blp.route("/store/<string:store_id>")
 class Store(MethodView):
     @blp.response(200, StoreSchema)
     def get(self, store_id):
-       store = StoreModel.query.get_or_404(store_id)
-       return store
-    
+        store = StoreModel.query.get_or_404(store_id)
+        return store
+
     def delete(self, store_id):
         store = StoreModel.query.get_or_404(store_id)
         db.session.delete(store)
         db.session.commit()
         return {"message": "Store deleted successfully."}
 
-@blp.route('/store')
+
+@blp.route("/store")
 class StoreList(MethodView):
     @blp.response(200, StoreSchema(many=True))
     def get(self):
@@ -34,7 +35,7 @@ class StoreList(MethodView):
     @blp.response(201, StoreSchema)
     def post(self, store_data):
         item = StoreModel(**store_data)
-        
+
         try:
             db.session.add(item)
             db.session.commit()
@@ -45,5 +46,3 @@ class StoreList(MethodView):
             abort(500, message=str(e))
 
         return item
-
-

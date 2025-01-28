@@ -12,7 +12,7 @@ class PlainStoreSchema(Schema):
     name = fields.Str()
 
 
-class PlainTagSchema(Schema):   
+class PlainTagSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
 
