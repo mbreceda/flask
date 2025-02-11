@@ -11,6 +11,7 @@ import models
 from resources.item import blp as itemBliueprint
 from resources.store import blp as storeBlueprint
 from resources.tag import blp as tagBlueprint
+from resources.user import blp as userBlueprint
 
 
 def create_app(db_url=None):
@@ -33,7 +34,7 @@ def create_app(db_url=None):
 
     api = Api(app)
 
-    app.config["JWT_SECRET_KEY"] = secrets.SystemRandom.getrandbits(128)
+    app.config["JWT_SECRET_KEY"] = secrets.token_hex(32)
     JWTManager(app)
 
     # This is deprecated
@@ -47,5 +48,6 @@ def create_app(db_url=None):
     api.register_blueprint(itemBliueprint)
     api.register_blueprint(storeBlueprint)
     api.register_blueprint(tagBlueprint)
+    api.register_blueprint(userBlueprint)
 
     return app
