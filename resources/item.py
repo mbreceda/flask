@@ -19,13 +19,12 @@ class Item(MethodView):
         item = ItemModel.query.get_or_404(item_id)
         return item
 
-
     @jwt_required()
     def delete(self, item_id):
         jwt = get_jwt()
         if not jwt["is_admin"]:
             abort(403, message="You are not authorized to delete items.")
-            
+
         item = ItemModel.query.get_or_404(item_id)
         db.session.delete(item)
         db.session.commit()
