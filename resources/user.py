@@ -23,6 +23,7 @@ class UserRegister(MethodView):
 
         user = UserModel(
             username=user_data["username"],
+            email=user_data["email"],
             password=pbkdf2_sha256.hash(user_data["password"])
         )
         try:
@@ -41,13 +42,21 @@ class UserLogin(MethodView):
     @blp.arguments(UserSchema)
     def post(self, user_data):
         user = UserModel.query.filter_by(
-            username=user_data["username"]
+            email=user_data["email"]
         ).first()
+
+        print(user)
 
         if user and pbkdf2_sha256.verify(user_data["password"], user.password):
             access_token = create_access_token(identity=str(user.id), fresh=True)
             refresh_token = create_refresh_token(identity=str(user.id))
-            return {"access_token": access_token, "refresh_token": refresh_token}, 200
+            return {"access_token": access_token, "refresh_token": refresh_token, "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            }}, 200
+        
+        return {"message": "Invalid credentials."}, 401
         
 
 @blp.route("/refresh")
