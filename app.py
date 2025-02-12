@@ -4,6 +4,7 @@ import secrets
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from db import db
 from blocklist import BLOCKLIST
@@ -37,6 +38,8 @@ def create_app(db_url=None):
 
     app.config["JWT_SECRET_KEY"] = secrets.token_hex(32)
     jwt = JWTManager(app)
+
+    CORS(app)
 
     @jwt.revoked_token_loader
     def revoked_token_callback(jwt_header, jwt_payload):

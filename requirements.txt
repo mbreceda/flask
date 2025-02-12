@@ -6,3 +6,4 @@ flask_sqlalchemy
 black
 flask-jwt-extended
 passlib
+flask-cors
