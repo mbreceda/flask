@@ -7,3 +7,4 @@ black
 flask-jwt-extended
 passlib
 flask-cors
+flask-migrate

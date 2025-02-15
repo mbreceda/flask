@@ -6,3 +6,7 @@ docker compose -f docker-compose.yml -f docker-compose.debug.yml up
 
 // Run build with a volume
 docker run -dp 8000:5000 -w /app -v "$(pwd):/app" flask-smorest-api
+
+// Run and apply migrations
+flask db init
+flask db upgrade
